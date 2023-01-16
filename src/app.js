@@ -1,29 +1,37 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
-const path  = require("path");
+const path = require("path");
+const hbs = require("hbs");
 // jab ham host karte website ko to khud ka port chiya hota ha usake ya likha
 
-// public static path 
-// console.log(path.join(__dirname,"../public"));
+// public static path
+// console.log(path.join(__dirname,"../public")));
 
+const static_path = path.join(__dirname,"../public")
+const templatePath = path.join(__dirname,"../template/views")
+const partials_path = path.join(__dirname,"../template/partials")
+app.set("views", "../views");
 
-const static_path = path.join(__dirname,"../public");
+app.set("view engine", "hbs");
+app.set("views", templatePath);
+hbs.registerPartials(partials_path)
+
 app.use(express.static(static_path));
 
 app.get("/", (req, res) => {
-  res.send("home");
+  res.render("index");
 });
-app.get("/about", (req, res) => {
-  res.send("about");
-});
+
 app.get("/weather", (req, res) => {
-  res.send("weather");
+  res.render("weather");
 });
 app.get("*", (req, res) => {
-  res.send("error");
+  res.render("404");
 });
 
 app.listen(port, () => {
   console.log("start");
 });
+
+// main root folder me views karna hota ha yadi template egin use karna ha
